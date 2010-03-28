@@ -1,6 +1,7 @@
 "pydoc.vim: pydoc integration for vim
 "performs searches and can display the documentation of python modules
-"Author: André Kelpe <fs111 at web dot de>
+"Author: André Kelpe <efeshundertelf at googlemail dot com>
+"Author: Romain Chossart <romainchossat at gmail dot com>
 "http://www.vim.org/scripts/script.php?script_id=910
 "This plugin integrates the pydoc into vim. You can view the
 "documentation of a module by using :Pydoc foo.bar.baz or search
