@@ -31,6 +31,13 @@ function! ShowPyDoc(name, type)
 	if !exists('g:pydoc_cmd')
 		let g:pydoc_cmd = 'pydoc'
 	endif
+
+	if bufloaded("__doc__") >0
+		let l:buf_is_new = 0
+	else
+		let l:buf_is_new = 1
+	endif
+
 	if bufnr("__doc__") >0
 			exe "sb __doc__"
 	else
@@ -42,19 +49,30 @@ function! ShowPyDoc(name, type)
 	normal ggdG
 	let s:name2 = substitute(a:name, '(.*', '', 'g' )
 	if a:type==1
-		execute  "silent read ! " g:pydoc_cmd . " " . s:name2 
+		execute  "silent read ! " . g:pydoc_cmd . " " . s:name2 
 	else 
-		execute  "silent read ! ".g:pydoc_cmd. " -k " . s:name2 
+		execute  "silent read ! " . g:pydoc_cmd . " -k " . s:name2 
 	endif	
 	setlocal nomodified
 	set filetype=man
 	normal 1G
- if !exists('g:pydoc_highlight')
+	if !exists('g:pydoc_highlight')
 		let g:pydoc_highlight = 1
 	endif
-  if g:pydoc_highlight ==1
+	if g:pydoc_highlight == 1
 		call Highlight(s:name2)
 	endif	
+
+	let l:line = getline(2)
+	if l:line =~ "^no Python documentation found for.*$" 
+		if l:buf_is_new
+			execute "bd!"
+		else
+			normal u
+		endif
+		redraw
+		echohl WarningMsg | echo l:line | echohl None
+	endif
 endfunction
 
 
@@ -64,15 +82,17 @@ function! Highlight(name)
 	syn on
 	exe 'syntax keyword pydoc '.s:name2
 	hi pydoc gui=reverse
-
 endfunction
 
 
 
 
 "mappings
-map  <leader>pw :call ShowPyDoc('<C-R><C-W>', 1)<CR> 
-map  <leader>pW :call ShowPyDoc('<C-R><C-A>', 1)<CR> 
+au FileType python,man map <buffer> <leader>pw :call ShowPyDoc('<C-R><C-W>', 1)<CR>
+au FileType python,man map <buffer> <leader>pW :call ShowPyDoc('<C-R><C-A>', 1)<CR>
+au FileType python,man map <buffer> <leader>pk :call ShowPyDoc('<C-R><C-W>', 0)<CR>
+au FileType python,man map <buffer> <leader>pK :call ShowPyDoc('<C-R><C-A>', 0)<CR>
+
 "commands
 command -nargs=1 Pydoc :call ShowPyDoc('<args>', 1)
 command -nargs=*  PydocSearch :call ShowPyDoc('<args>', 0)
