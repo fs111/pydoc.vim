@@ -29,63 +29,68 @@
 
 set switchbuf=useopen
 function! ShowPyDoc(name, type)
-	if !exists('g:pydoc_cmd')
-		let g:pydoc_cmd = 'pydoc'
-	endif
+    if !exists('g:pydoc_cmd')
+        let g:pydoc_cmd = 'pydoc'
+    endif
 
-	if bufloaded("__doc__") >0
-		let l:buf_is_new = 0
-	else
-		let l:buf_is_new = 1
-	endif
+    if bufloaded("__doc__") >0
+        let l:buf_is_new = 0
+    else
+        let l:buf_is_new = 1
+    endif
 
-	if bufnr("__doc__") >0
-			exe "sb __doc__"
-	else
-			exe 'split __doc__'
-	endif
-	setlocal noswapfile
-	set buftype=nofile
-	setlocal modifiable
-	normal ggdG
-	let s:name2 = substitute(a:name, '(.*', '', 'g' )
-	if a:type==1
-		execute  "silent read ! " . g:pydoc_cmd . " " . s:name2 
-	else 
-		execute  "silent read ! " . g:pydoc_cmd . " -k " . s:name2 
-	endif	
-	setlocal nomodified
-	set filetype=man
-	normal 1G
-	if !exists('g:pydoc_highlight')
-		let g:pydoc_highlight = 1
-	endif
-	if g:pydoc_highlight == 1
-		call Highlight(s:name2)
-	endif	
+    if bufnr("__doc__") >0
+        execute "sb __doc__"
+    else
+        execute 'split __doc__'
+    endif
+    setlocal noswapfile
+    set buftype=nofile
+    setlocal modifiable
+    normal ggdG
+    let s:name2 = substitute(a:name, '(.*', '', 'g' )
+    if a:type==1
+        execute  "silent read ! " . g:pydoc_cmd . " " . s:name2 
+    else 
+        execute  "silent read ! " . g:pydoc_cmd . " -k " . s:name2 
+    endif	
+    setlocal nomodified
+    set filetype=man
+    normal 1G
 
-	let l:line = getline(2)
-	if l:line =~ "^no Python documentation found for.*$" 
-		if l:buf_is_new
-			execute "bd!"
-		else
-			normal u
-		endif
-		redraw
-		echohl WarningMsg | echo l:line | echohl None
-	endif
+    if !exists('g:pydoc_wh')
+        let g:pydoc_wh = 10
+    end
+    resize -999
+    execute "silent resize +" . g:pydoc_wh 
+
+    if !exists('g:pydoc_highlight')
+        let g:pydoc_highlight = 1
+    endif
+    if g:pydoc_highlight == 1
+        call Highlight(s:name2)
+    endif	
+
+    let l:line = getline(2)
+    if l:line =~ "^no Python documentation found for.*$" 
+        if l:buf_is_new
+            execute "bd!"
+        else
+            normal u
+        endif
+        redraw
+        echohl WarningMsg | echo l:line | echohl None
+    endif
 endfunction
 
 
 function! Highlight(name)
-	exe "sb __doc__"
-	set filetype=man
-	syn on
-	exe 'syntax keyword pydoc '.s:name2
-	hi pydoc gui=reverse
+    execute "sb __doc__"
+    set filetype=man
+    syn on
+    execute 'syntax keyword pydoc '.s:name2
+    hi pydoc gui=reverse
 endfunction
-
-
 
 
 "mappings
