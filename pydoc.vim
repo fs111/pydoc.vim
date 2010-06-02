@@ -50,6 +50,7 @@ function! ShowPyDoc(name, type)
     setlocal modifiable
     normal ggdG
     let s:name2 = substitute(a:name, '(.*', '', 'g' )
+    let s:name2 = substitute(a:name, ':', '', 'g' )
     if a:type==1
         execute  "silent read ! " . g:pydoc_cmd . " " . s:name2 
     else 
