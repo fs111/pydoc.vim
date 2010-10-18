@@ -102,5 +102,5 @@ au FileType python,man map <buffer> <leader>pk :call ShowPyDoc('<C-R><C-W>', 0)<
 au FileType python,man map <buffer> <leader>pK :call ShowPyDoc('<C-R><C-A>', 0)<CR>
 
 "commands
-command -nargs=1 Pydoc :call ShowPyDoc('<args>', 1)
-command -nargs=*  PydocSearch :call ShowPyDoc('<args>', 0)
+command! -nargs=1 Pydoc :call ShowPyDoc('<args>', 1)
+command! -nargs=*  PydocSearch :call ShowPyDoc('<args>', 0)
