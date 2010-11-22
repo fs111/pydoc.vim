@@ -85,15 +85,14 @@ function! ShowPyDoc(name, type)
     endif
 endfunction
 
-
+"highlighting
 function! Highlight(name)
     execute "sb __doc__"
     set filetype=man
-    syn on
-    execute 'syntax keyword pydoc '.s:name2
+    "syn on
+    execute 'syntax keyword pydoc '.a:name
     hi pydoc gui=reverse
 endfunction
-
 
 "mappings
 au FileType python,man map <buffer> <leader>pw :call ShowPyDoc('<C-R><C-W>', 1)<CR>
