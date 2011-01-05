@@ -49,8 +49,10 @@ function! ShowPyDoc(name, type)
     set buftype=nofile
     setlocal modifiable
     normal ggdG
+    " remove function/method arguments
     let s:name2 = substitute(a:name, '(.*', '', 'g' )
-    let s:name2 = substitute(a:name, ':', '', 'g' )
+    " remove all colons
+    let s:name2 = substitute(s:name2, ':', '', 'g' )
     if a:type==1
         execute  "silent read ! " . g:pydoc_cmd . " " . s:name2 
     else 
