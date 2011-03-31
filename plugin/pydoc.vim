@@ -20,6 +20,14 @@
 
 "in your .vimrc
 
+"If you want to open pydoc files in vertical splits or tabs, give the
+"appropriate command in
+
+" let g:pydoc_open_cmd = \"vsplit"
+
+"or
+
+" let g:pydoc_open_cmd = \"tabnew"
 
 "pydoc.vim is free software, you can redistribute or modify
 "it under the terms of the GNU General Public License Version 2 or any
@@ -34,6 +42,14 @@ function! ShowPyDoc(name, type)
         let g:pydoc_cmd = 'pydoc'
     endif
 
+    if !exists('g:pydoc_open_cmd')
+        let g:pydoc_open_cmd = 'split'
+    endif
+
+    if g:pydoc_open_cmd == 'split'
+        let l:pydoc_wh = 10
+    endif
+
     if bufloaded("__doc__") >0
         let l:buf_is_new = 0
     else
@@ -41,10 +57,11 @@ function! ShowPyDoc(name, type)
     endif
 
     if bufnr("__doc__") >0
-        execute "sb __doc__"
+        execute g:pydoc_open_cmd.' | b __doc__'
     else
-        execute 'split __doc__'
+        execute g:pydoc_open_cmd.' __doc__'
     endif
+
     setlocal noswapfile
     set buftype=nofile
     setlocal modifiable
@@ -62,11 +79,9 @@ function! ShowPyDoc(name, type)
     set filetype=man
     normal 1G
 
-    if !exists('g:pydoc_wh')
-        let g:pydoc_wh = 10
+    if exists('l:pydoc_wh')
+        execute "silent resize " . l:pydoc_wh 
     end
-    resize -999
-    execute "silent resize +" . g:pydoc_wh 
 
     if !exists('g:pydoc_highlight')
         let g:pydoc_highlight = 1
