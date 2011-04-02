@@ -1,39 +1,66 @@
-"pydoc.vim: pydoc integration for vim
-"performs searches and can display the documentation of python modules
-"Author: André Kelpe <efeshundertelf at googlemail dot com>
+"pydoc.vim: pydoc integration for vim performs searches and can display the
+"documentation of python modules 
+"Author: André Kelpe <efeshundertelf at
+"googlemail dot com> 
 "Author: Romain Chossart <romainchossat at gmail dot com>
 "Author: Matthias Vogelgesang
+"Author: patches and suggestions from all sorts of fine people
 "http://www.vim.org/scripts/script.php?script_id=910
-"This plugin integrates the pydoc into vim. You can view the
-"documentation of a module by using :Pydoc foo.bar.baz or search
-"a word (uses pydoc -k) in the documentation by typing PydocSearch
-"foobar. You can also view the documentation of the word under the
-"cursor by pressing <leader>pw or the WORD (see :help WORD) by pressing
-"<leader>pW.  "This is very useful if you want to jump to a module which was found by
-"PydocSearch. To have a browser like feeling you can use u and CTRL-R to
-"go back and forward, just like editing normal text.
+"
+"This plugin integrates the python documentation view- and search-tool 'pydoc'
+"into (g)vim. The plugin allows yout to view the documentation of a
+"python-module or class by typing
+"
+":Pydoc foo.bar.baz (e.g. :Pydoc re.compile)
+"
+"or search a word (uses pydoc -k) in the documentation by typing
+"
+":PydocSearch foobar
+""
+"Vim will split a new buffer, which shows the python-documentation found by 
+"pydoc.  (The buffer is called '__doc__' (pythonic, isn't it ;-) ). The name
+"may cause problems, if you have a file with the same name, but usually this 
+"should not happen).
 
-"If you want to use the script and pydoc is not in your PATH, just put a
-"line like  
+"pydoc.vim also allows you view the documentation of the 'word' (see :help
+"word) under the cursor by pressing <leader>pw or the 'WORD' (see :help WORD)
+"under the cursor by pressing <leader>pW. This is very useful if you want to
+"jump to the docs of a module or class found by 'PydocSearch' or if you want
+"to see the docs of a module/class in your source code.
 
+"To have a browser like feeling you can use 'u' and 'CTRL-r' to go back and
+"forward, just like editing normal text in a normal buffer.
+"
+"The script is also hosted on github:
+"https://github.com/fs111/pydoc.vim
+
+"If you want to use the script and pydoc is not in your PATH, just put a line
+"like  
+"
 " let g:pydoc_cmd = \"/usr/bin/pydoc" (without the backslash!!)
-
+"
 "in your .vimrc
-
+"
 "If you want to open pydoc files in vertical splits or tabs, give the
 "appropriate command in
-
 " let g:pydoc_open_cmd = \"vsplit"
-
+" 
 "or
-
+"
 " let g:pydoc_open_cmd = \"tabnew"
-
+"
+"The script will highlight the search-term by default. To disable this behaviour
+"put
+"
+" let g:pydoc_highlight=0
+"
+" in your .vimrc. 
+"
 "pydoc.vim is free software, you can redistribute or modify
 "it under the terms of the GNU General Public License Version 2 or any
 "later Version (see http://www.gnu.org/copyleft/gpl.html for details). 
 
-"Please feel free to contact me.
+"Please feel free to contact me and follow me on twitter (@fs111)
 
 
 set switchbuf=useopen
