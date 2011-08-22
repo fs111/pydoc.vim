@@ -139,14 +139,18 @@ function! Highlight(name)
 endfunction
 
 "mappings
-au FileType python,man map <buffer> <leader>pw :call ShowPyDoc('<C-R><C-W>', 1)<CR>
-au FileType python,man map <buffer> <leader>pW :call ShowPyDoc('<C-R><C-A>', 1)<CR>
-au FileType python,man map <buffer> <leader>pk :call ShowPyDoc('<C-R><C-W>', 0)<CR>
-au FileType python,man map <buffer> <leader>pK :call ShowPyDoc('<C-R><C-A>', 0)<CR>
+if !exists('g:pydoc_perform_mappings')
+    let g:pydoc_perform_mappings = 1
+endif
+if g:pydoc_perform_mappings != 0
+    au FileType python,man map <buffer> <leader>pw :call ShowPyDoc('<C-R><C-W>', 1)<CR>
+    au FileType python,man map <buffer> <leader>pW :call ShowPyDoc('<C-R><C-A>', 1)<CR>
+    au FileType python,man map <buffer> <leader>pk :call ShowPyDoc('<C-R><C-W>', 0)<CR>
+    au FileType python,man map <buffer> <leader>pK :call ShowPyDoc('<C-R><C-A>', 0)<CR>
 
-" remap the K (or 'help') key
-nnoremap <silent> <buffer> K :call ShowPyDoc(expand("<cword>"), 1)<CR>
-
+    " remap the K (or 'help') key
+    nnoremap <silent> <buffer> K :call ShowPyDoc(expand("<cword>"), 1)<CR>
+endif
 
 "commands
 command! -nargs=1 Pydoc :call ShowPyDoc('<args>', 1)
