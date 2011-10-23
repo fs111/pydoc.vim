@@ -3,6 +3,7 @@
 " Authors:  André Kelpe <efeshundertelf at googlemail dot com>
 "           Romain Chossart <romainchossat at gmail dot com>
 "           Matthias Vogelgesang
+"           Ricardo Catalinas Jiménez <jimenezrick at gmail.com>
 "           Patches and suggestions from all sorts of fine people
 "
 " More info and updates at:
@@ -65,9 +66,17 @@
 "
 " Please feel free to contact me and follow me on twitter (@fs111).
 
+if exists("b:did_ftplugin")
+    finish
+else
+    let b:did_ftplugin = 1
+endif
+
+"
 " XXX: para que sirve esto de abajo?
+"
 set switchbuf=useopen
-function! ShowPyDoc(name, type)
+function s:ShowPyDoc(name, type)
     if !exists('g:pydoc_cmd')
         let g:pydoc_cmd = 'pydoc'
     endif
@@ -80,13 +89,13 @@ function! ShowPyDoc(name, type)
         let l:pydoc_wh = 10
     endif
 
-    if bufloaded("__doc__") >0
+    if bufloaded("__doc__") > 0
         let l:buf_is_new = 0
     else
         let l:buf_is_new = 1
     endif
 
-    if bufnr("__doc__") >0
+    if bufnr("__doc__") > 0
         execute g:pydoc_open_cmd.' | b __doc__'
     else
         execute g:pydoc_open_cmd.' __doc__'
@@ -100,28 +109,28 @@ function! ShowPyDoc(name, type)
     let s:name2 = substitute(a:name, '(.*', '', 'g' )
     " remove all colons
     let s:name2 = substitute(s:name2, ':', '', 'g' )
-    if a:type==1
-        execute  "silent read ! " . g:pydoc_cmd . " " . s:name2 
+    if a:type == 1
+        execute  "silent read ! " . g:pydoc_cmd . " " . s:name2
     else
-        execute  "silent read ! " . g:pydoc_cmd . " -k " . s:name2 
+        execute  "silent read ! " . g:pydoc_cmd . " -k " . s:name2
     endif
     setlocal nomodified
     set filetype=man
     normal 1G
 
     if exists('l:pydoc_wh')
-        execute "silent resize " . l:pydoc_wh 
+        execute "silent resize " . l:pydoc_wh
     end
 
     if !exists('g:pydoc_highlight')
         let g:pydoc_highlight = 1
     endif
     if g:pydoc_highlight == 1
-        call Highlight(s:name2)
+        call s:Highlight(s:name2)
     endif
 
     let l:line = getline(2)
-    if l:line =~ "^no Python documentation found for.*$" 
+    if l:line =~ "^no Python documentation found for.*$"
         if l:buf_is_new
             execute "bd!"
         else
@@ -133,7 +142,7 @@ function! ShowPyDoc(name, type)
 endfunction
 
 " Highlighting
-function! Highlight(name)
+function s:Highlight(name)
     execute "sb __doc__"
     set filetype=man
     "syn on
@@ -145,16 +154,17 @@ endfunction
 if !exists('g:pydoc_perform_mappings')
     let g:pydoc_perform_mappings = 1
 endif
+
 if g:pydoc_perform_mappings != 0
-    au FileType python,man map <buffer> <Leader>pw :call ShowPyDoc('<C-R><C-W>', 1)<CR>
-    au FileType python,man map <buffer> <Leader>pW :call ShowPyDoc('<C-R><C-A>', 1)<CR>
-    au FileType python,man map <buffer> <Leader>pk :call ShowPyDoc('<C-R><C-W>', 0)<CR>
-    au FileType python,man map <buffer> <Leader>pK :call ShowPyDoc('<C-R><C-A>', 0)<CR>
+    nnoremap <buffer> <Leader>pw :call s:ShowPyDoc('<C-R><C-W>', 1)<CR>
+    nnoremap <buffer> <Leader>pW :call s:ShowPyDoc('<C-R><C-A>', 1)<CR>
+    nnoremap <buffer> <Leader>pk :call s:ShowPyDoc('<C-R><C-W>', 0)<CR>
+    nnoremap <buffer> <Leader>pK :call s:ShowPyDoc('<C-R><C-A>', 0)<CR>
 
     " remap the K (or 'help') key
-    nnoremap <silent> <buffer> K :call ShowPyDoc(expand("<cword>"), 1)<CR>
+    nnoremap <silent> <buffer> K :call s:ShowPyDoc(expand("<cword>"), 1)<CR>
 endif
 
 " Commands
-command! -nargs=1 Pydoc :call ShowPyDoc('<args>', 1)
-command! -nargs=*  PydocSearch :call ShowPyDoc('<args>', 0)
+command -nargs=1 Pydoc       :call s:ShowPyDoc('<args>', 1)
+command -nargs=* PydocSearch :call s:ShowPyDoc('<args>', 0)
