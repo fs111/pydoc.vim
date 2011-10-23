@@ -148,11 +148,6 @@ function s:ShowPyDoc(name, type)
     endif
 endfunction
 
-"
-" XXX
-" XXX: Fix s:Highlight
-" XXX
-"
 " Highlighting
 function s:Highlight(name)
     execute "sb __doc__"
@@ -163,13 +158,13 @@ endfunction
 
 " Mappings
 function s:PerformMappings()
-    nnoremap <buffer> <Leader>pw :call <SID>ShowPyDoc('<C-R><C-W>', 1)<CR>
-    nnoremap <buffer> <Leader>pW :call <SID>ShowPyDoc('<C-R><C-A>', 1)<CR>
-    nnoremap <buffer> <Leader>pk :call <SID>ShowPyDoc('<C-R><C-W>', 0)<CR>
-    nnoremap <buffer> <Leader>pK :call <SID>ShowPyDoc('<C-R><C-A>', 0)<CR>
+    nnoremap <silent> <buffer> <Leader>pw :silent call <SID>ShowPyDoc('<C-R><C-W>', 1)<CR>
+    nnoremap <silent> <buffer> <Leader>pW :silent call <SID>ShowPyDoc('<C-R><C-A>', 1)<CR>
+    nnoremap <silent> <buffer> <Leader>pk :silent call <SID>ShowPyDoc('<C-R><C-W>', 0)<CR>
+    nnoremap <silent> <buffer> <Leader>pK :silent call <SID>ShowPyDoc('<C-R><C-A>', 0)<CR>
 
     " remap the K (or 'help') key
-    nnoremap <buffer> K :call <SID>ShowPyDoc(expand("<cword>"), 1)<CR>
+    nnoremap <silent> <buffer> K :silent call <SID>ShowPyDoc(expand("<cword>"), 1)<CR>
 endfunction
 
 if !exists('g:pydoc_perform_mappings')
@@ -180,5 +175,5 @@ if g:pydoc_perform_mappings != 0
 endif
 
 " Commands
-command -nargs=1 Pydoc       :call s:ShowPyDoc('<args>', 1)
-command -nargs=* PydocSearch :call s:ShowPyDoc('<args>', 0)
+command -nargs=1 Pydoc       :silent call s:ShowPyDoc('<args>', 1)
+command -nargs=* PydocSearch :silent call s:ShowPyDoc('<args>', 0)
