@@ -93,9 +93,9 @@ function s:ShowPyDoc(name, type)
     endif
 
     if bufnr("__doc__") > 0
-        execute g:pydoc_open_cmd.' | b __doc__'
+        execute g:pydoc_open_cmd '| b __doc__'
     else
-        execute g:pydoc_open_cmd.' __doc__'
+        execute g:pydoc_open_cmd '__doc__'
     endif
 
     setlocal noswapfile
@@ -107,16 +107,16 @@ function s:ShowPyDoc(name, type)
     " remove all colons
     let s:name2 = substitute(s:name2, ':', '', 'g' )
     if a:type == 1
-        execute  "silent read ! " . g:pydoc_cmd . " " . s:name2
+        execute  "silent read !" g:pydoc_cmd s:name2
     else
-        execute  "silent read ! " . g:pydoc_cmd . " -k " . s:name2
+        execute  "silent read !" g:pydoc_cmd "-k" s:name2
     endif
     setlocal nomodified
     set filetype=man
     normal 1G
 
     if exists('l:pydoc_wh')
-        execute "silent resize " . l:pydoc_wh
+        execute "silent resize" l:pydoc_wh
     end
 
     if !exists('g:pydoc_highlight')
@@ -143,7 +143,7 @@ function s:Highlight(name)
     execute "sb __doc__"
     set filetype=man
     "syn on
-    execute 'syntax keyword pydoc '.a:name
+    execute 'syntax keyword pydoc' a:name
     hi pydoc gui=reverse
 endfunction
 
