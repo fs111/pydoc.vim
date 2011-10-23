@@ -32,9 +32,6 @@
 " jump to the docs of a module or class found by 'PydocSearch' or if you want
 " to see the docs of a module/class in your source code.
 "
-" To have a feeling like a browser you can use 'u' and 'CTRL-R' to go back and
-" forward, just like editing normal text in a normal buffer.
-"
 " The script is developed in GitHub at:
 "
 " http://github.com/fs111/pydoc.vim
