@@ -72,9 +72,6 @@ else
     let b:did_ftplugin = 1
 endif
 
-"
-" XXX: para que sirve esto de abajo?
-"
 set switchbuf=useopen
 function s:ShowPyDoc(name, type)
     if !exists('g:pydoc_cmd')
@@ -156,13 +153,13 @@ if !exists('g:pydoc_perform_mappings')
 endif
 
 if g:pydoc_perform_mappings != 0
-    nnoremap <buffer> <Leader>pw :call s:ShowPyDoc('<C-R><C-W>', 1)<CR>
-    nnoremap <buffer> <Leader>pW :call s:ShowPyDoc('<C-R><C-A>', 1)<CR>
-    nnoremap <buffer> <Leader>pk :call s:ShowPyDoc('<C-R><C-W>', 0)<CR>
-    nnoremap <buffer> <Leader>pK :call s:ShowPyDoc('<C-R><C-A>', 0)<CR>
+    nnoremap <buffer> <Leader>pw :call <SID>ShowPyDoc('<C-R><C-W>', 1)<CR>
+    nnoremap <buffer> <Leader>pW :call <SID>ShowPyDoc('<C-R><C-A>', 1)<CR>
+    nnoremap <buffer> <Leader>pk :call <SID>ShowPyDoc('<C-R><C-W>', 0)<CR>
+    nnoremap <buffer> <Leader>pK :call <SID>ShowPyDoc('<C-R><C-A>', 0)<CR>
 
     " remap the K (or 'help') key
-    nnoremap <silent> <buffer> K :call s:ShowPyDoc(expand("<cword>"), 1)<CR>
+    nnoremap <buffer> K :call <SID>ShowPyDoc(expand("<cword>"), 1)<CR>
 endif
 
 " Commands
