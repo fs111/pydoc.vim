@@ -98,6 +98,7 @@ function s:ShowPyDoc(name, type)
             " If the __doc__ buffer is open in the
             " current window, jump to it
             execute "sbuffer" bufnr("__doc__")
+            let l:pydoc_wh = -1
         else
             execute g:pydoc_open_cmd '__doc__'
             setlocal noswapfile
