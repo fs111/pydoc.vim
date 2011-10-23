@@ -72,7 +72,7 @@ else
     let b:did_ftplugin = 1
 endif
 
-set switchbuf=useopen
+setlocal switchbuf=useopen
 function s:ShowPyDoc(name, type)
     if !exists('g:pydoc_cmd')
         let g:pydoc_cmd = 'pydoc'
@@ -92,19 +92,27 @@ function s:ShowPyDoc(name, type)
         let l:buf_is_new = 1
     endif
 
-    if bufnr("__doc__") > 0
-        execute g:pydoc_open_cmd '| b __doc__'
+    if bufname("%") == "__doc__"
+        " The current buffer is __doc__, so do not
+        " recreate nor resize it
+        let l:pydoc_wh = -1
     else
-        execute g:pydoc_open_cmd '__doc__'
+        if bufnr("__doc__") > 0
+            execute g:pydoc_open_cmd '| b __doc__'
+        else
+            execute g:pydoc_open_cmd '__doc__'
+            setlocal noswapfile
+            setlocal buftype=nofile
+            setlocal modifiable
+            setlocal filetype=man
+            call s:PerformMappings()
+        endif
     endif
 
-    setlocal noswapfile
-    set buftype=nofile
-    setlocal modifiable
     normal ggdG
-    " remove function/method arguments
+    " Remove function/method arguments
     let s:name2 = substitute(a:name, '(.*', '', 'g' )
-    " remove all colons
+    " Remove all colons
     let s:name2 = substitute(s:name2, ':', '', 'g' )
     if a:type == 1
         execute  "silent read !" g:pydoc_cmd s:name2
@@ -112,10 +120,9 @@ function s:ShowPyDoc(name, type)
         execute  "silent read !" g:pydoc_cmd "-k" s:name2
     endif
     setlocal nomodified
-    set filetype=man
     normal 1G
 
-    if exists('l:pydoc_wh')
+    if exists('l:pydoc_wh') && l:pydoc_wh != -1
         execute "silent resize" l:pydoc_wh
     end
 
@@ -138,21 +145,21 @@ function s:ShowPyDoc(name, type)
     endif
 endfunction
 
+"
+" XXX
+" XXX: Fix s:Highlight
+" XXX
+"
 " Highlighting
 function s:Highlight(name)
     execute "sb __doc__"
-    set filetype=man
-    "syn on
+    setlocal filetype=man
     execute 'syntax keyword pydoc' a:name
     hi pydoc gui=reverse
 endfunction
 
 " Mappings
-if !exists('g:pydoc_perform_mappings')
-    let g:pydoc_perform_mappings = 1
-endif
-
-if g:pydoc_perform_mappings != 0
+function s:PerformMappings()
     nnoremap <buffer> <Leader>pw :call <SID>ShowPyDoc('<C-R><C-W>', 1)<CR>
     nnoremap <buffer> <Leader>pW :call <SID>ShowPyDoc('<C-R><C-A>', 1)<CR>
     nnoremap <buffer> <Leader>pk :call <SID>ShowPyDoc('<C-R><C-W>', 0)<CR>
@@ -160,6 +167,13 @@ if g:pydoc_perform_mappings != 0
 
     " remap the K (or 'help') key
     nnoremap <buffer> K :call <SID>ShowPyDoc(expand("<cword>"), 1)<CR>
+endfunction
+
+if !exists('g:pydoc_perform_mappings')
+    let g:pydoc_perform_mappings = 1
+endif
+if g:pydoc_perform_mappings != 0
+    call s:PerformMappings()
 endif
 
 " Commands
