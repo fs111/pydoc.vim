@@ -1,68 +1,71 @@
-"pydoc.vim: pydoc integration for vim performs searches and can display the
-"documentation of python modules 
-"Author: André Kelpe <efeshundertelf at
-"googlemail dot com> 
-"Author: Romain Chossart <romainchossat at gmail dot com>
-"Author: Matthias Vogelgesang
-"Author: patches and suggestions from all sorts of fine people
-"http://www.vim.org/scripts/script.php?script_id=910
+" Vim ftplugin file
+" Language: Python
+" Authors:  André Kelpe <efeshundertelf at googlemail dot com>
+"           Romain Chossart <romainchossat at gmail dot com>
+"           Matthias Vogelgesang
+"           Patches and suggestions from all sorts of fine people
 "
-"This plugin integrates the python documentation view- and search-tool 'pydoc'
-"into (g)vim. The plugin allows yout to view the documentation of a
-"python-module or class by typing
+" More info and updates at:
 "
-":Pydoc foo.bar.baz (e.g. :Pydoc re.compile)
+" http://www.vim.org/scripts/script.php?script_id=910
 "
-"or search a word (uses pydoc -k) in the documentation by typing
 "
-":PydocSearch foobar
-""
-"Vim will split a new buffer, which shows the python-documentation found by 
-"pydoc.  (The buffer is called '__doc__' (pythonic, isn't it ;-) ). The name
-"may cause problems, if you have a file with the same name, but usually this 
-"should not happen).
-
-"pydoc.vim also allows you view the documentation of the 'word' (see :help
-"word) under the cursor by pressing <leader>pw or the 'WORD' (see :help WORD)
-"under the cursor by pressing <leader>pW. This is very useful if you want to
-"jump to the docs of a module or class found by 'PydocSearch' or if you want
-"to see the docs of a module/class in your source code.
-
-"To have a browser like feeling you can use 'u' and 'CTRL-r' to go back and
-"forward, just like editing normal text in a normal buffer.
+" This plugin integrates the Python documentation view and search tool pydoc
+" into Vim. The plugin allows you to view the documentation of a Python
+" module or class by typing:
 "
-"The script is also hosted on github:
-"https://github.com/fs111/pydoc.vim
-
-"If you want to use the script and pydoc is not in your PATH, just put a line
-"like  
+" :Pydoc foo.bar.baz (e.g. :Pydoc re.compile)
 "
-" let g:pydoc_cmd = \"/usr/bin/pydoc" (without the backslash!!)
+" Or search a word (uses pydoc -k) in the documentation by typing:
 "
-"in your .vimrc
+" :PydocSearch foobar (e.g. :PydocSearch socket)
 "
-"If you want to open pydoc files in vertical splits or tabs, give the
-"appropriate command in
-" let g:pydoc_open_cmd = \"vsplit"
-" 
-"or
+" Vim will split the current window to show the Python documentation found by
+" pydoc (the buffer will be called '__doc__', Pythonic, isn't it ;-) ). The
+" name may cause problems if you have a file with the same name, but usually
+" this should not happen.
 "
-" let g:pydoc_open_cmd = \"tabnew"
+" pydoc.vim also allows you to view the documentation of the 'word' (see :help
+" word) under the cursor by pressing <Leader>pw or the 'WORD' (see :help WORD)
+" under the cursor by pressing <Leader>pW. This is very useful if you want to
+" jump to the docs of a module or class found by 'PydocSearch' or if you want
+" to see the docs of a module/class in your source code.
 "
-"The script will highlight the search-term by default. To disable this behaviour
-"put
+" To have a feeling like a browser you can use 'u' and 'CTRL-R' to go back and
+" forward, just like editing normal text in a normal buffer.
+"
+" The script is developed in GitHub at:
+"
+" http://github.com/fs111/pydoc.vim
+"
+"
+" If you want to use the script and pydoc is not in your PATH, just put a
+" line like this in your .vimrc:
+"
+" let g:pydoc_cmd = '/usr/bin/pydoc'
+"
+" If you want to open pydoc files in vertical splits or tabs, give the
+" appropriate command in your .vimrc with:
+"
+" let g:pydoc_open_cmd = 'vsplit'
+"
+" or
+"
+" let g:pydoc_open_cmd = 'tabnew'
+"
+" The script will highlight the search term by default. To disable this behaviour
+" put in your .vimrc:
 "
 " let g:pydoc_highlight=0
 "
-" in your .vimrc. 
+" pydoc.vim is free software; you can redistribute it and/or
+" modify it under the terms of the GNU General Public License
+" as published by the Free Software Foundation; either version 2
+" of the License, or (at your option) any later version.
 "
-"pydoc.vim is free software, you can redistribute or modify
-"it under the terms of the GNU General Public License Version 2 or any
-"later Version (see http://www.gnu.org/copyleft/gpl.html for details). 
+" Please feel free to contact me and follow me on twitter (@fs111).
 
-"Please feel free to contact me and follow me on twitter (@fs111)
-
-
+" XXX: para que sirve esto de abajo?
 set switchbuf=useopen
 function! ShowPyDoc(name, type)
     if !exists('g:pydoc_cmd')
@@ -99,9 +102,9 @@ function! ShowPyDoc(name, type)
     let s:name2 = substitute(s:name2, ':', '', 'g' )
     if a:type==1
         execute  "silent read ! " . g:pydoc_cmd . " " . s:name2 
-    else 
+    else
         execute  "silent read ! " . g:pydoc_cmd . " -k " . s:name2 
-    endif	
+    endif
     setlocal nomodified
     set filetype=man
     normal 1G
@@ -115,7 +118,7 @@ function! ShowPyDoc(name, type)
     endif
     if g:pydoc_highlight == 1
         call Highlight(s:name2)
-    endif	
+    endif
 
     let l:line = getline(2)
     if l:line =~ "^no Python documentation found for.*$" 
@@ -129,7 +132,7 @@ function! ShowPyDoc(name, type)
     endif
 endfunction
 
-"highlighting
+" Highlighting
 function! Highlight(name)
     execute "sb __doc__"
     set filetype=man
@@ -138,20 +141,20 @@ function! Highlight(name)
     hi pydoc gui=reverse
 endfunction
 
-"mappings
+" Mappings
 if !exists('g:pydoc_perform_mappings')
     let g:pydoc_perform_mappings = 1
 endif
 if g:pydoc_perform_mappings != 0
-    au FileType python,man map <buffer> <leader>pw :call ShowPyDoc('<C-R><C-W>', 1)<CR>
-    au FileType python,man map <buffer> <leader>pW :call ShowPyDoc('<C-R><C-A>', 1)<CR>
-    au FileType python,man map <buffer> <leader>pk :call ShowPyDoc('<C-R><C-W>', 0)<CR>
-    au FileType python,man map <buffer> <leader>pK :call ShowPyDoc('<C-R><C-A>', 0)<CR>
+    au FileType python,man map <buffer> <Leader>pw :call ShowPyDoc('<C-R><C-W>', 1)<CR>
+    au FileType python,man map <buffer> <Leader>pW :call ShowPyDoc('<C-R><C-A>', 1)<CR>
+    au FileType python,man map <buffer> <Leader>pk :call ShowPyDoc('<C-R><C-W>', 0)<CR>
+    au FileType python,man map <buffer> <Leader>pK :call ShowPyDoc('<C-R><C-A>', 0)<CR>
 
     " remap the K (or 'help') key
     nnoremap <silent> <buffer> K :call ShowPyDoc(expand("<cword>"), 1)<CR>
 endif
 
-"commands
+" Commands
 command! -nargs=1 Pydoc :call ShowPyDoc('<args>', 1)
 command! -nargs=*  PydocSearch :call ShowPyDoc('<args>', 0)
