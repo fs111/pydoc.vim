@@ -1,5 +1,5 @@
-pydoc.vim integrates pythons documentation system into vim. If you use vim and python, you want to use it :-).
+pydoc.vim integrates Python documentation system into Vim. If you use
+Vim and Python, you want to use it :-)
 
-NOTE: Right now pydoc.vim is a ftplugin, which is new. If that works for everyone, I will update the docs and release a new version on vim.org. Before I do that, I wait for some feedback here in github.
-
-Find more info at vim.org: http://www.vim.org/scripts/script.php?script_id=910
+Find more info at vim.org:
+	http://www.vim.org/scripts/script.php?script_id=910
