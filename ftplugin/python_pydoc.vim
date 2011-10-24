@@ -70,6 +70,7 @@ else
 endif
 
 setlocal switchbuf=useopen
+
 function s:ShowPyDoc(name, type)
     if !exists('g:pydoc_cmd')
         let g:pydoc_cmd = 'pydoc'
