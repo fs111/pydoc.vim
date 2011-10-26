@@ -172,13 +172,13 @@ endfunction
 
 " Mappings
 function s:PerformMappings()
-    nnoremap <silent> <buffer> <Leader>pw :silent call <SID>ShowPyDoc('<C-R><C-W>', 1)<CR>
-    nnoremap <silent> <buffer> <Leader>pW :silent call <SID>ShowPyDoc('<C-R><C-A>', 1)<CR>
-    nnoremap <silent> <buffer> <Leader>pk :silent call <SID>ShowPyDoc('<C-R><C-W>', 0)<CR>
-    nnoremap <silent> <buffer> <Leader>pK :silent call <SID>ShowPyDoc('<C-R><C-A>', 0)<CR>
+    nnoremap <silent> <buffer> <Leader>pw :call <SID>ShowPyDoc('<C-R><C-W>', 1)<CR>
+    nnoremap <silent> <buffer> <Leader>pW :call <SID>ShowPyDoc('<C-R><C-A>', 1)<CR>
+    nnoremap <silent> <buffer> <Leader>pk :call <SID>ShowPyDoc('<C-R><C-W>', 0)<CR>
+    nnoremap <silent> <buffer> <Leader>pK :call <SID>ShowPyDoc('<C-R><C-A>', 0)<CR>
 
     " remap the K (or 'help') key
-    nnoremap <silent> <buffer> K :silent call <SID>ShowPyDoc(expand("<cword>"), 1)<CR>
+    nnoremap <silent> <buffer> K :call <SID>ShowPyDoc(expand("<cword>"), 1)<CR>
 endfunction
 
 if g:pydoc_perform_mappings
@@ -186,5 +186,5 @@ if g:pydoc_perform_mappings
 endif
 
 " Commands
-command -nargs=1 Pydoc       :silent call s:ShowPyDoc('<args>', 1)
-command -nargs=* PydocSearch :silent call s:ShowPyDoc('<args>', 0)
+command -nargs=1 Pydoc       :call s:ShowPyDoc('<args>', 1)
+command -nargs=* PydocSearch :call s:ShowPyDoc('<args>', 0)
