@@ -133,7 +133,7 @@ function s:ShowPyDoc(name, type)
     setlocal filetype=python
     setlocal syntax=man
 
-    normal ggdG
+    silent normal ggdG
     " Remove function/method arguments
     let s:name2 = substitute(a:name, '(.*', '', 'g' )
     " Remove all colons
