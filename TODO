@@ -1,3 +1,2 @@
-- Fix s:Highlight() function, does it work?
-- Fix when searching for some word/WORD inside the __doc__ buffer.
-  Now it does nothing, it stays in the same module doc.
+- When first try is for a word/WORD that does not have doc, then the
+  syntax is not loaded correctly.
