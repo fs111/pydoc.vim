@@ -114,24 +114,24 @@ function s:ShowPyDoc(name, type)
         " The current buffer is __doc__, so do not
         " recreate nor resize it
         let l:pydoc_wh = -1
-        setlocal modifiable
     else
         if bufnr("__doc__") > 0
             " If the __doc__ buffer is open in the
             " current window, jump to it
-            execute "sbuffer" bufnr("__doc__")
+            silent execute "sbuffer" bufnr("__doc__")
             let l:pydoc_wh = -1
-            setlocal modifiable
         else
-            execute g:pydoc_open_cmd '__doc__'
-            setlocal noswapfile
-            setlocal buftype=nofile
-            setlocal bufhidden=delete
-            setlocal filetype=python
-            setlocal syntax=man
+            silent execute g:pydoc_open_cmd '__doc__'
             call s:PerformMappings()
         endif
     endif
+
+    setlocal modifiable
+    setlocal noswapfile
+    setlocal buftype=nofile
+    setlocal bufhidden=delete
+    setlocal filetype=python
+    setlocal syntax=man
 
     normal ggdG
     " Remove function/method arguments

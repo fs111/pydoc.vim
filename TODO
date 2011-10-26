@@ -1,2 +1,0 @@
-- When first try is for a word/WORD that does not have doc, then the
-  syntax is not loaded correctly.
