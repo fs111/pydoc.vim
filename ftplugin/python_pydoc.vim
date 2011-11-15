@@ -3,7 +3,7 @@
 " Authors:  André Kelpe <efeshundertelf at googlemail dot com>
 "           Romain Chossart <romainchossat at gmail dot com>
 "           Matthias Vogelgesang
-"           Ricardo Catalinas Jiménez <jimenezrick at gmail.com>
+"           Ricardo Catalinas Jiménez <jimenezrick at gmail dot com>
 "           Patches and suggestions from all sorts of fine people
 "
 " More info and updates at:
@@ -63,11 +63,9 @@
 "
 " Please feel free to contact me and follow me on twitter (@fs111).
 
-if exists("b:did_ftplugin")
-    finish
-else
-    let b:did_ftplugin = 1
-endif
+" IMPORTANT: We don't use here the `exists("b:did_ftplugin")' guard becase we
+" want to let the Python filetype script that comes with Vim to execute as
+" normal.
 
 " Don't redefine the functions if this ftplugin has been executed previously
 " and before finish create the local mappings in the current buffer
@@ -130,7 +128,6 @@ function s:ShowPyDoc(name, type)
     setlocal noswapfile
     setlocal buftype=nofile
     setlocal bufhidden=delete
-    setlocal filetype=python
     setlocal syntax=man
 
     silent normal ggdG
