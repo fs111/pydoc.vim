@@ -113,7 +113,7 @@ function s:ShowPyDoc(name, type)
         " recreate nor resize it
         let l:pydoc_wh = -1
     else
-        if bufnr("__doc__") > 0
+        if bufloaded("__doc__") > 0
             " If the __doc__ buffer is open in the
             " current window, jump to it
             silent execute "sbuffer" bufnr("__doc__")
