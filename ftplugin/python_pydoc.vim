@@ -102,27 +102,22 @@ function s:ShowPyDoc(name, type)
         let l:pydoc_wh = 10
     endif
 
-    if bufloaded("__doc__") > 0
+    if bufloaded("__doc__")
         let l:buf_is_new = 0
-    else
-        let l:buf_is_new = 1
-    endif
-
-    if bufname("%") == "__doc__"
-        " The current buffer is __doc__, so do not
-        " recreate nor resize it
-        let l:pydoc_wh = -1
-    else
-        if bufnr("__doc__") > 0
-            " If the __doc__ buffer is open in the
-            " current window, jump to it
-            silent execute "sbuffer" bufnr("__doc__")
+        if bufname("%") == "__doc__"
+            " The current buffer is __doc__, thus do not
+            " recreate nor resize it
             let l:pydoc_wh = -1
         else
-            silent execute g:pydoc_open_cmd '__doc__'
-            if g:pydoc_perform_mappings
-                call s:PerformMappings()
-            endif
+            " If the __doc__ buffer is open, jump to it
+            silent execute "sbuffer" bufnr("__doc__")
+            let l:pydoc_wh = -1
+        endif
+    else
+        let l:buf_is_new = 1
+        silent execute g:pydoc_open_cmd '__doc__'
+        if g:pydoc_perform_mappings
+            call s:PerformMappings()
         endif
     endif
 
