@@ -102,7 +102,7 @@ function s:ShowPyDoc(name, type)
         let l:pydoc_wh = 10
     endif
 
-    if bufloaded("__doc__") > 0
+    if bufloaded("__doc__")
         let l:buf_is_new = 0
     else
         let l:buf_is_new = 1
@@ -113,7 +113,7 @@ function s:ShowPyDoc(name, type)
         " recreate nor resize it
         let l:pydoc_wh = -1
     else
-        if bufloaded("__doc__") > 0
+        if bufloaded("__doc__")
             " If the __doc__ buffer is open in the
             " current window, jump to it
             silent execute "sbuffer" bufnr("__doc__")
