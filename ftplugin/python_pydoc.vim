@@ -120,7 +120,9 @@ function s:ShowPyDoc(name, type)
             let l:pydoc_wh = -1
         else
             silent execute g:pydoc_open_cmd '__doc__'
-            call s:PerformMappings()
+            if g:pydoc_perform_mappings
+                call s:PerformMappings()
+            endif
         endif
     endif
 
