@@ -1,5 +1,9 @@
 pydoc.vim integrates Python documentation system into Vim. If you use
 Vim and Python, you want to use it :-)
 
-Find more info at vim.org:
-	http://www.vim.org/scripts/script.php?script_id=910
+pydoc.vim is an ftplugin and has to be installed in your ftplugin directory.
+Installing it in the plugin directory wont work.
+
+You can find the complete documentation in the code itself.
+
+Happy hacking!

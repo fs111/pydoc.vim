@@ -12,8 +12,8 @@
 "
 "
 " This plugin integrates the Python documentation view and search tool pydoc
-" into Vim. The plugin allows you to view the documentation of a Python
-" module or class by typing:
+" into Vim. It allows you to view the documentation of a Python module or class
+" by typing:
 "
 " :Pydoc foo.bar.baz (e.g. :Pydoc re.compile)
 "
@@ -30,7 +30,8 @@
 " word) under the cursor by pressing <Leader>pw or the 'WORD' (see :help WORD)
 " under the cursor by pressing <Leader>pW. This is very useful if you want to
 " jump to the docs of a module or class found by 'PydocSearch' or if you want
-" to see the docs of a module/class in your source code.
+" to see the docs of a module/class in your source code. Additionally K is
+" mapped to show invoke pydoc as well, when you are editing python files.
 "
 " The script is developed in GitHub at:
 "
@@ -41,6 +42,10 @@
 " line like this in your .vimrc:
 "
 " let g:pydoc_cmd = '/usr/bin/pydoc'
+"
+" or more portable
+"
+" let g:pydoc_cmd = 'python -m pydoc'
 "
 " If you want to open pydoc files in vertical splits or tabs, give the
 " appropriate command in your .vimrc with:
@@ -55,6 +60,13 @@
 " put in your .vimrc:
 "
 " let g:pydoc_highlight=0
+"
+"
+" In order to install pydoc.vim download it from vim.org or clone the repository
+" on githubi and put it in your .vim/ftplugin directory. pydoc.vim is also fully
+" compatible with pathogen, so cloning the repository into your bundle directory
+" is also a valid way to install it. (I do this myself. see
+" https://github.com/fs111/dotvim).
 "
 " pydoc.vim is free software; you can redistribute it and/or
 " modify it under the terms of the GNU General Public License
