@@ -176,6 +176,21 @@ function s:ShowPyDoc(name, type)
     endif
 endfunction
 
+function s:ExpandModulePath()
+    " Extract the 'word' at the cursor, expanding leftwards across identifiers
+    " and the . operator, and rightwards across the identifier only.
+    "
+    " For example:
+    "   import xml.dom.minidom
+    "           ^   !
+    "
+    " With the cursor at ^ this returns 'xml'; at ! it returns 'xml.dom'.
+    let l:line = getline(".")
+    let l:pre = l:line[:col(".") - 1]
+    let l:suf = l:line[col("."):]
+    return matchstr(pre, "[A-Za-z0-9_.]*$") . matchstr(suf, "^[A-Za-z0-9_]*")
+endfunction
+
 " Mappings
 function s:PerformMappings()
     nnoremap <silent> <buffer> <Leader>pw :call <SID>ShowPyDoc('<C-R><C-W>', 1)<CR>
@@ -184,7 +199,7 @@ function s:PerformMappings()
     nnoremap <silent> <buffer> <Leader>pK :call <SID>ShowPyDoc('<C-R><C-A>', 0)<CR>
 
     " remap the K (or 'help') key
-    nnoremap <silent> <buffer> K :call <SID>ShowPyDoc(expand("<cword>"), 1)<CR>
+    nnoremap <silent> <buffer> K :call <SID>ShowPyDoc(<SID>ExpandModulePath(), 1)<CR>
 endfunction
 
 if g:pydoc_perform_mappings
