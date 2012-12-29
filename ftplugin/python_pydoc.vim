@@ -61,6 +61,11 @@
 "
 " let g:pydoc_highlight=0
 "
+" If you want pydoc to switch to an already open tab with pydoc page, 
+" set this variable in your .vimrc (uses drop - requires vim compiled with
+" gui!):
+"
+" let g:pydoc_use_drop=1
 "
 " In order to install pydoc.vim download it from vim.org or clone the repository
 " on githubi and put it in your .vim/ftplugin directory. pydoc.vim is also fully
@@ -122,7 +127,11 @@ function s:ShowPyDoc(name, type)
             let l:pydoc_wh = -1
         else
             " If the __doc__ buffer is open, jump to it
-            silent execute "sbuffer" bufnr("__doc__")
+            if exists("g:pydoc_use_drop")
+                silent execute "drop" "__doc__"
+            else
+                silent execute "sbuffer" bufnr("__doc__")
+            endif
             let l:pydoc_wh = -1
         endif
     else
