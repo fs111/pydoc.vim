@@ -147,6 +147,7 @@ function s:ShowPyDoc(name, type)
     setlocal buftype=nofile
     setlocal bufhidden=delete
     setlocal syntax=man
+    setlocal nolist
 
     silent normal ggdG
     " Remove function/method arguments
