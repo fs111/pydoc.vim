@@ -61,11 +61,21 @@
 "
 " let g:pydoc_highlight=0
 "
-" If you want pydoc to switch to an already open tab with pydoc page, 
+" If you want pydoc to switch to an already open tab with pydoc page,
 " set this variable in your .vimrc (uses drop - requires vim compiled with
 " gui!):
 "
 " let g:pydoc_use_drop=1
+"
+" Pydoc files are open with 10 lines height, if you want to change this value
+" put this in your .vimrc:
+"
+" let g:pydoc_window_lines=15
+" or
+" let g:pydoc_window_lines=0.5
+"
+" Float values specify a percentage of the current window.
+"
 "
 " In order to install pydoc.vim download it from vim.org or clone the repository
 " on githubi and put it in your .vim/ftplugin directory. pydoc.vim is also fully
@@ -110,13 +120,26 @@ endif
 setlocal switchbuf=useopen
 highlight pydoc cterm=reverse gui=reverse
 
+function s:GetWindowLine(value)
+    echo a:value
+    if a:value < 1
+        return float2nr(winheight(0)*a:value)
+    else
+        return a:value
+    endif
+endfunction
+
 function s:ShowPyDoc(name, type)
     if a:name == ''
         return
     endif
 
     if g:pydoc_open_cmd == 'split'
-        let l:pydoc_wh = 10
+        if exists('g:pydoc_window_lines')
+            let l:pydoc_wh = s:GetWindowLine(g:pydoc_window_lines)
+        else
+            let l:pydoc_wh = 10
+        endif
     endif
 
     if bufloaded("__doc__")
