@@ -121,7 +121,6 @@ setlocal switchbuf=useopen
 highlight pydoc cterm=reverse gui=reverse
 
 function s:GetWindowLine(value)
-    echo a:value
     if a:value < 1
         return float2nr(winheight(0)*a:value)
     else
