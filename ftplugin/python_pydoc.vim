@@ -121,7 +121,6 @@ setlocal switchbuf=useopen
 highlight pydoc cterm=reverse gui=reverse
 
 function s:GetWindowLine(value)
-    echo a:value
     if a:value < 1
         return float2nr(winheight(0)*a:value)
     else
@@ -151,15 +150,15 @@ function s:ShowPyDoc(name, type)
         else
             " If the __doc__ buffer is open, jump to it
             if exists("g:pydoc_use_drop")
-                silent execute "drop" "__doc__"
+                execute "drop" "__doc__"
             else
-                silent execute "sbuffer" bufnr("__doc__")
+                execute "sbuffer" bufnr("__doc__")
             endif
             let l:pydoc_wh = -1
         endif
     else
         let l:buf_is_new = 1
-        silent execute g:pydoc_open_cmd '__doc__'
+        execute g:pydoc_open_cmd '__doc__'
         if g:pydoc_perform_mappings
             call s:PerformMappings()
         endif
@@ -172,20 +171,20 @@ function s:ShowPyDoc(name, type)
     setlocal syntax=man
     setlocal nolist
 
-    silent normal ggdG
+    normal ggdG
     " Remove function/method arguments
     let s:name2 = substitute(a:name, '(.*', '', 'g' )
     " Remove all colons
     let s:name2 = substitute(s:name2, ':', '', 'g' )
     if a:type == 1
-        execute  "silent read !" g:pydoc_cmd s:name2
+        execute  "read !" g:pydoc_cmd s:name2
     else
-        execute  "silent read !" g:pydoc_cmd "-k" s:name2
+        execute  "read !" g:pydoc_cmd "-k" s:name2
     endif
     normal 1G
 
     if exists('l:pydoc_wh') && l:pydoc_wh != -1
-        execute "silent resize" l:pydoc_wh
+        execute "resize" l:pydoc_wh
     end
 
     if g:pydoc_highlight == 1
