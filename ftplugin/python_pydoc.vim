@@ -120,7 +120,7 @@ endif
 setlocal switchbuf=useopen
 highlight pydoc cterm=reverse gui=reverse
 
-function s:GetWindowLine(value)
+function! s:GetWindowLine(value)
     if a:value < 1
         return float2nr(winheight(0)*a:value)
     else
@@ -128,7 +128,8 @@ function s:GetWindowLine(value)
     endif
 endfunction
 
-function s:ShowPyDoc(name, type)
+" Args: name: lookup; type: 0: search, 1: lookup
+function! s:ShowPyDoc(name, type)
     if a:name == ''
         return
     endif
@@ -208,7 +209,7 @@ function s:ShowPyDoc(name, type)
     endif
 endfunction
 
-function s:ExpandModulePath()
+function! s:ExpandModulePath()
     " Extract the 'word' at the cursor, expanding leftwards across identifiers
     " and the . operator, and rightwards across the identifier only.
     "
@@ -224,7 +225,7 @@ function s:ExpandModulePath()
 endfunction
 
 " Mappings
-function s:PerformMappings()
+function! s:PerformMappings()
     nnoremap <silent> <buffer> <Leader>pw :call <SID>ShowPyDoc('<C-R><C-W>', 1)<CR>
     nnoremap <silent> <buffer> <Leader>pW :call <SID>ShowPyDoc('<C-R><C-A>', 1)<CR>
     nnoremap <silent> <buffer> <Leader>pk :call <SID>ShowPyDoc('<C-R><C-W>', 0)<CR>
@@ -239,5 +240,5 @@ if g:pydoc_perform_mappings
 endif
 
 " Commands
-command -nargs=1 Pydoc       :call s:ShowPyDoc('<args>', 1)
-command -nargs=* PydocSearch :call s:ShowPyDoc('<args>', 0)
+command! -nargs=1 Pydoc       :call s:ShowPyDoc('<args>', 1)
+command! -nargs=* PydocSearch :call s:ShowPyDoc('<args>', 0)
