@@ -90,14 +90,16 @@
 "
 " Please feel free to contact me and follow me on twitter (@fs111).
 
-" IMPORTANT: We don't use here the `exists("b:did_ftplugin")' guard becase we
+" IMPORTANT: We don't use here the `exists("b:did_ftplugin")' guard because we
 " want to let the Python filetype script that comes with Vim to execute as
 " normal.
 
-" Don't redefine the functions if this ftplugin has been executed previously
-" and before finish create the local mappings in the current buffer
-if exists('*s:ShowPyDoc') && g:pydoc_perform_mappings
-    call s:PerformMappings()
+" Don't redefine the functions if this ftplugin has been executed previously.
+" But define the local mappings for the current buffer.
+if exists('*s:ShowPyDoc')
+    if g:pydoc_perform_mappings
+        call s:PerformMappings()
+    endif
     finish
 endif
 
