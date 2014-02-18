@@ -178,10 +178,14 @@ function! s:ShowPyDoc(name, type)
     " Remove all colons
     let s:name2 = substitute(s:name2, ':', '', 'g' )
     if a:type == 1
-        execute  "silent read !" g:pydoc_cmd s:name2
+        let s:cmd = g:pydoc_cmd . ' ' . shellescape(s:name2)
     else
-        execute  "silent read !" g:pydoc_cmd "-k" s:name2
+        let s:cmd = g:pydoc_cmd . ' -k ' . shellescape(s:name2)
     endif
+    if &verbose
+        echomsg "pydoc: calling " s:cmd
+    endif
+    execute  "silent read !" s:cmd
     normal 1G
 
     if exists('l:pydoc_wh') && l:pydoc_wh != -1
