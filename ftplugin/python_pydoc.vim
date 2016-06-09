@@ -213,6 +213,32 @@ function! s:ShowPyDoc(name, type)
     endif
 endfunction
 
+function! s:ReplaceModuleAlias()
+    " Replace module aliases with their own name.
+    "
+    " For example:
+    "   import foo as bar
+    " if `bar` is in the ExpandModulePath's return value, it should be
+    " replaced with `foo`.
+    let l:cur_col = col(".")
+    let l:cur_line = line(".")
+    let l:module_path = s:ExpandModulePath()
+    let l:module_names = split(l:module_path, '\.')
+    let l:module_orig_name = l:module_names[0]
+    if search('import \+[0-9a-zA-Z_.]\+ \+as \+' . l:module_orig_name)
+        let l:line = getline(".")
+        let l:name = matchlist(l:line, 'import \+\([a-zA-Z0-9_.]\+\) \+as')[1]
+        if l:name != ''
+            let l:module_orig_name = l:name
+        endif
+    endif
+    if l:module_names[0] != l:module_orig_name
+        let l:module_names[0] = l:module_orig_name
+    endif
+    call cursor(l:cur_line, l:cur_col)
+    return join(l:module_names, ".")
+endfunction
+
 function! s:ExpandModulePath()
     " Extract the 'word' at the cursor, expanding leftwards across identifiers
     " and the . operator, and rightwards across the identifier only.
@@ -236,7 +262,7 @@ function! s:PerformMappings()
     nnoremap <silent> <buffer> <Leader>pK :call <SID>ShowPyDoc('<C-R><C-A>', 0)<CR>
 
     " remap the K (or 'help') key
-    nnoremap <silent> <buffer> K :call <SID>ShowPyDoc(<SID>ExpandModulePath(), 1)<CR>
+    nnoremap <silent> <buffer> K :call <SID>ShowPyDoc(<SID>ReplaceModuleAlias(), 1)<CR>
 endfunction
 
 if g:pydoc_perform_mappings
