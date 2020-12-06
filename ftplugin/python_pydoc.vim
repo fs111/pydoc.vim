@@ -225,11 +225,19 @@ function! s:ReplaceModuleAlias()
     let l:module_path = s:ExpandModulePath()
     let l:module_names = split(l:module_path, '\.')
     let l:module_orig_name = l:module_names[0]
+
     if search('import \+[0-9a-zA-Z_.]\+ \+as \+' . l:module_orig_name)
         let l:line = getline(".")
         let l:name = matchlist(l:line, 'import \+\([a-zA-Z0-9_.]\+\) \+as')[1]
         if l:name != ''
             let l:module_orig_name = l:name
+        endif
+    endif
+    if search('from \+[0-9a-zA-Z_.]\+ \+import \+(\?\(\w\+\(,\s*\n*\s*\)\?\)*' . l:module_orig_name)
+        let l:line = getline(".")
+        let l:package = matchlist(l:line, 'from \+\([a-zA-Z0-9_.]\+\) \+import')[1]
+        if l:package != ''
+            let l:module_orig_name = l:package . '.' . l:module_orig_name
         endif
     endif
     if l:module_names[0] != l:module_orig_name
