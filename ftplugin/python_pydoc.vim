@@ -233,7 +233,7 @@ function! s:ReplaceModuleAlias()
             let l:module_orig_name = l:name
         endif
     endif
-    if search('from \+[0-9a-zA-Z_.]\+ \+import \+(\?\(\w\+\(,\s*\n*\s*\)\?\)*' . l:module_orig_name)
+    if search('from \+[0-9a-zA-Z_.]\+ \+import \+(\?\([a-zA-Z0-9_.]\+\(,\s*\n*\s*\)\?\)*' . l:module_orig_name)
         let l:line = getline(".")
         let l:package = matchlist(l:line, 'from \+\([a-zA-Z0-9_.]\+\) \+import')[1]
         if l:package != ''
