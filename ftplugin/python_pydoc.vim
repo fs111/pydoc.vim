@@ -210,6 +210,8 @@ function! s:ShowPyDoc(name, type)
     else
         setlocal nomodified
         setlocal nomodifiable
+        noremap <buffer> <silent> <CR> :<C-U>close<CR>
+        noremap <buffer> <silent> <Esc> :<C-U>close<CR>
     endif
 endfunction
 
@@ -282,3 +284,6 @@ command! -nargs=1 Pydoc       :call s:ShowPyDoc('<args>', 1)
 command! -nargs=* PydocSearch :call s:ShowPyDoc('<args>', 0)
 ca pyd Pydoc
 ca pyds PydocSearch
+
+
+
